@@ -201,7 +201,7 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
+  require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -210,7 +210,7 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -249,7 +249,7 @@ vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = 'menu,menuone,preview,noinsert'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
@@ -475,6 +475,38 @@ mason_lspconfig.setup_handlers {
   end
 }
 
+require'lspconfig'.sourcekit.setup{
+  cmd = {'/usr/bin/sourcekit-lsp'}
+}
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    --enable omnifunc completion
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+    -- buffer local mappings
+    local opts = { buffer = ev.buf }  
+    -- go to definition
+    -- vim.keymap.set('n','gd',vim.lsp.buf.definition,opts)
+    --puts doc header info into a float page
+    vim.keymap.set('n','K',vim.lsp.buf.hover,opts)
+
+    -- workspace management. Necessary for multi-module projects
+    vim.keymap.set('n','<space>wa',vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n','<space>wr',vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n','<space>wl',function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end,opts)
+
+    -- add LSP code actions
+    vim.keymap.set({'n','v'},'<space>ca',vim.lsp.buf.code_action,opts)                
+
+    -- find references of a type
+    vim.keymap.set('n','gr',vim.lsp.buf.references,opts)
+  end,
+})
+
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'
@@ -483,20 +515,23 @@ require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
 cmp.setup {
+  preselect = 'item',
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert {
+    -- ['<C-f>'] = luasnip.,
+    -- ['<C-b>'] = cmp_action.luasnip_jump_backward(),
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    -- ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
+      select = true
     },
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
