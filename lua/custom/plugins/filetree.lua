@@ -1,4 +1,4 @@
--- Unless you are still migrating, remove the deprecated commands from v1.x
+-- Unless you are still migrating, remove the deprecated commands from v2.x
 vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
 
 return {
@@ -10,9 +10,18 @@ return {
     "MunifTanjim/nui.nvim",
   },
   config = function()
-    require('neo-tree').setup {
-      vim.keymap.set('n', '<S-D-B>', '<Cmd>Neotree toggle<CR>')
-    }
+    local neotree = require('neo-tree')
+
+    neotree.setup({
+      close_if_last_window = true, -- close if neotree is last window left in tabs
+      window = {
+        width = 30,
+      }
+    })
+
+    vim.keymap.set('n', '<C-S-space>', '<Cmd>Neotree toggle<CR>')
+
+
     require 'nvim-web-devicons'.setup {
       -- your personnal icons can go here (to override)
       -- you can specify color or cterm_color instead of specifying both of them
