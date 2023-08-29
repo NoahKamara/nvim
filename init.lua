@@ -86,7 +86,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -108,9 +108,7 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
-
-  -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  -- { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -124,7 +122,8 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
+          { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
       end,
@@ -164,9 +163,6 @@ require('lazy').setup({
       show_trailing_blankline_indent = false,
     },
   },
-
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -475,8 +471,8 @@ mason_lspconfig.setup_handlers {
   end
 }
 
-require'lspconfig'.sourcekit.setup{
-  cmd = {'/usr/bin/sourcekit-lsp'}
+require 'lspconfig'.sourcekit.setup {
+  cmd = { '/usr/bin/sourcekit-lsp' }
 }
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -486,24 +482,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
     -- buffer local mappings
-    local opts = { buffer = ev.buf }  
+    local opts = { buffer = ev.buf }
     -- go to definition
     -- vim.keymap.set('n','gd',vim.lsp.buf.definition,opts)
     --puts doc header info into a float page
-    vim.keymap.set('n','K',vim.lsp.buf.hover,opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
 
     -- workspace management. Necessary for multi-module projects
-    vim.keymap.set('n','<space>wa',vim.lsp.buf.add_workspace_folder, opts)
-    vim.keymap.set('n','<space>wr',vim.lsp.buf.remove_workspace_folder, opts)
-    vim.keymap.set('n','<space>wl',function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end,opts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
 
     -- add LSP code actions
-    vim.keymap.set({'n','v'},'<space>ca',vim.lsp.buf.code_action,opts)                
+    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
 
     -- find references of a type
-    vim.keymap.set('n','gr',vim.lsp.buf.references,opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
   end,
 })
 

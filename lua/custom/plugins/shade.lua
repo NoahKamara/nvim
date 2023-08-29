@@ -1,3 +1,5 @@
+-- darkens inactive window
+
 return {
   "sunjon/shade.nvim",
   config = function()
