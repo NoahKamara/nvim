@@ -1,76 +1,50 @@
 -- status line
 
--- stylua: ignore
-local colors = {
-  blue   = '#80a0ff',
-  cyan   = '#79dac8',
-  black  = '#080808',
-  white  = '#c6c6c6',
-  red    = '#ff5189',
-  violet = '#d183e8',
-  grey   = '#303030',
-}
-
-local bubbles_theme = {
-  normal = {
-    a = { fg = colors.black, bg = colors.violet },
-    b = { fg = colors.white, bg = colors.grey },
-    c = { fg = colors.black, bg = colors.black },
-  },
-
-  insert = { a = { fg = colors.black, bg = colors.blue } },
-  visual = { a = { fg = colors.black, bg = colors.cyan } },
-  replace = { a = { fg = colors.black, bg = colors.red } },
-
-  inactive = {
-    a = { fg = colors.white, bg = colors.black },
-    b = { fg = colors.white, bg = colors.black },
-    c = { fg = colors.black, bg = colors.black },
-  },
-}
-
+-- TODO:
+-- * color file type & icon using devicons
 
 return {
   -- Set lualine as statusline
   'nvim-lualine/lualine.nvim',
-  -- See `:help lualine.txt`
-  opts = {
-    options = {
-      icons_enabled = false,
-      theme = 'onedark',
-      component_separators = '|',
-      section_separators = '',
-    },
-  },
+  dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
-    require('lualine').setup {
+    local line = require("lualine")
+
+    -- Theme
+    local theme = require("lualine.themes.onedark")
+
+    -- Icon & Icon Color
+    local devicons = require('nvim-web-devicons')
+    local function file_icon()
+      local icon = devicons.get_icon("filename", "lua", { default = true })
+      return icon
+    end
+
+    -- Line Setup
+    line.setup({
       options = {
-        theme = bubbles_theme,
-        component_separators = '|',
-        section_separators = { left = '', right = '' },
+        icons_enabled = false,
+        theme = theme,
       },
       sections = {
-        lualine_a = {
-          { 'mode', separator = { left = '' }, right_padding = 2 },
+        lualine_a = { 'mode' },
+        lualine_b = {
+          { 'branch', icons_enabled = true, icon = "" },
+          'diagnostics'
         },
-        lualine_b = { 'filename', 'branch' },
-        lualine_c = { 'fileformat' },
-        lualine_x = {},
-        lualine_y = { 'filetype', 'progress' },
-        lualine_z = {
-          { 'location', separator = { right = '' }, left_padding = 2 },
-        },
+        lualine_c = { 'filename' },
+        lualine_x = { { file_icon, separator = "", padding = { left = 1, right = 0 } }, 'filetype' },
+        lualine_y = {},
+        lualine_z = { 'filename', 'location' }
       },
       inactive_sections = {
-        lualine_a = { 'filename' },
-        lualine_b = {},
+        lualine_a = {},
+        lualine_b = { 'filename' },
         lualine_c = {},
         lualine_x = {},
         lualine_y = {},
-        lualine_z = { 'location' },
+        lualine_z = {}
       },
-      tabline = {},
-      extensions = {},
-    }
+    })
   end
 }

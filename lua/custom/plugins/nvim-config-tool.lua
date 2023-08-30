@@ -8,5 +8,5 @@ return {
     vim.o.timeoutlen = 300
   end,
 
-  config = true
+  config = false
 }

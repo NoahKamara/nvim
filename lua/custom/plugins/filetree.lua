@@ -34,6 +34,7 @@ return {
           name = "Zsh"
         }
       },
+      follow_current_line = true,
       -- globally enable different highlight colors per icon (default to true)
       -- if set to false all icons will have the default icon's color
       color_icons = true,
