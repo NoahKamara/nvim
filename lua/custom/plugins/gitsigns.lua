@@ -18,13 +18,11 @@ return {
       require("which-key").register({
         name = "[G]it",
         s = { ':Git status<CR>', "[S]tatus" },
-        c = {
-          name = "[C]ommit",
-          a = { ':Git commit -a | startinsert<CR>', "Commit [A]ll" },
-          c = { ':Git add . | :Git commit -a | startinsert<CR>', "Commit [C]urrent" },
-
+        c = { ':Git commit | startinsert<CR>', "[C]ommit" },
+        a = {
+          name = "[A]dd",
+          a = { ':Git add --all<CR>', "[A]all" }
         },
-
         -- Git Signs (Hunks)
         h = {
           name = "[H]unks",
