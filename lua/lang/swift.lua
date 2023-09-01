@@ -2,6 +2,7 @@ require('lspconfig').sourcekit.setup {
   cmd = { '/usr/bin/sourcekit-lsp' }
 }
 
+
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(ev)

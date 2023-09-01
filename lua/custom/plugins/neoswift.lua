@@ -1,4 +1,9 @@
 return {
   dir = "~/Developer/nvim-swift",
-  config = true
+  dependencies = { "MunifTanjim/nui.nvim" },
+  config = function()
+    require("nui.line")
+    require("nvim-swift").setup()
+  end,
+  dev = true
 }

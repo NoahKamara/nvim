@@ -13,10 +13,14 @@ return {
     -- Theme
     local theme = require("lualine.themes.onedark")
 
-    -- Icon & Icon Color
+    -- Filetype Icon Color
     local devicons = require('nvim-web-devicons')
+
     local function file_icon()
-      local icon = devicons.get_icon("filename", "lua", { default = true })
+      local name = vim.fn.expand("%:t")
+      local ext = vim.fn.expand("%:e")
+
+      local icon = devicons.get_icon(name, ext, { default = true })
       return icon
     end
 
@@ -33,13 +37,14 @@ return {
           'diagnostics'
         },
         lualine_c = { 'filename' },
-        lualine_x = { { file_icon, separator = "", padding = { left = 1, right = 0 } }, 'filetype' },
-        lualine_y = {},
-        lualine_z = { 'filename', 'location' }
+        lualine_x = { 'searchcount' },
+        lualine_y = { 'filename' },
+        lualine_z = { { 'filetype', separator = "", padding = { left = 1, right = 0 } }, file_icon,
+          'location' }
       },
       inactive_sections = {
         lualine_a = {},
-        lualine_b = { 'filename' },
+        lualine_b = {},
         lualine_c = {},
         lualine_x = {},
         lualine_y = {},
