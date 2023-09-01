@@ -22,18 +22,11 @@
 return {
   "hrsh7th/cmp-nvim-lsp-signature-help",
   config = function()
-    -- vim.keymap.set()
-    --
-    --
-
     require("which-key").register({
-      ["<C-s>"] = { function() print("bar") end, "Signature Help" }
+      ["<C-s>"] = { function() vim.lsp.buf.signature_help() end, "[S]ignature Help" }
     }, {
       mode = "i"
     })
-
-
-    vim.keymap.set('i', '<c-s>', function() vim.lsp.buf.signature_help() end, { buffer = true })
 
     require('cmp').setup {
       sources = {
