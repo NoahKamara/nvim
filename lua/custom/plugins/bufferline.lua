@@ -6,8 +6,9 @@ return {
     require("bufferline").setup(
       {
         options = {
-          separator_style = "slope",
-          -- diagnostics = "nvim_lsp",
+          always_show_bufferline = false,
+          separator_style = "slant",
+          diagnostics = "nvim_lsp",
 
           offsets = {
             {
